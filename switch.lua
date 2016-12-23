@@ -1,4 +1,3 @@
-
 MQTT_Broker = "220ua.com"
 MQTT_port   = 1883
 MQTT_user   = "hryniv"
@@ -11,9 +10,10 @@ last_msg    = ""
 function mqtt_connect()
     broker = mqtt.Client("towers_esp", 30, MQTT_user, MQTT_pass)
     broker:lwt("/lwt", "offline", 0, 0)
+    tmr.alarm(2, 10000, tmr.ALARM_AUTO, mqtt_check_connection )
     if broker:connect(MQTT_Broker, MQTT_port, 0, 1, function(con) 
       mqtt_sub()
-      end) then print("MQTT connected:", MQTT_Broker)
+      end) then print("MQTT connectting to:", MQTT_Broker)
       else node.restart()
     end
 end
@@ -56,24 +56,23 @@ function mqtt_subscribed()
     f.close()
   end
   
-  tmr.alarm(2, 10000, tmr.ALARM_AUTO, mqtt_check_connection )
-  if not broker:publish( status, last_msg, 0,0) then node.restart()
-  end
-  print("Subscribed to:", topic)
+  mqtt_check_connection()
+  print("MQTT Subscribed to:", topic)
     
 end
 
 function mqtt_sub()
   -- read & set callback for changes
- broker:subscribe(topic, 0, function(client) 
+  broker:subscribe(topic, 0, function(client) 
         mqtt_subscribed()
- end)
+  end)
+ 
 end
 
 
 gpio.mode(pin, gpio.OUTPUT)
 f=file.open("state")
-if not  f == nil then
+if not f == nil then
     last_msg=f.read()
     f.close()
   else
