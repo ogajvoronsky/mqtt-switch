@@ -72,7 +72,8 @@ end
 
 
 gpio.mode(pin, gpio.OUTPUT)
-if file.open("state") then
+f=file.open("state")
+if not  f == nil then
     last_msg=f.read()
     f.close()
   else
