@@ -1,4 +1,4 @@
-MQTT_Broker = "220ua.com"
+MQTT_Broker = "220ua.ddns.net"
 MQTT_port   = 1883
 MQTT_user   = "hryniv"
 MQTT_pass   = "LJ8uQSqYlR6i"
@@ -70,6 +70,7 @@ function mqtt_sub()
 end
 
 
+-- Start here
 gpio.mode(pin, gpio.OUTPUT)
 f=file.open("state")
 if not (f == nil) then

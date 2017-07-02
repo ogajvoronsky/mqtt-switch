@@ -6,3 +6,4 @@ Publish own status to status topic on change and every 10sec for keep connection
 If MQTT-broker goes offline (publish failed) - restart node and reconnect to broker.
 
 
+
